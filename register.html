@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CampusQuest - Register</title>
+</head>
+<body>
+    <h2>CampusQuest - Register</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('register') }}">
+        <input name="username" placeholder="Username" required>
+        <br><br>
+        <input name="password" type="password" placeholder="Password" required>
+        <br><br>
+        <button type="submit">Register</button>
+    </form>
+
+    <p>Already have an account? <a href="/login">Login</a></p>
+    <p><a href="/">Home</a></p>
+</body>
+</html>

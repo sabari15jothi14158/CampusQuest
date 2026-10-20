@@ -1,0 +1,1557 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusQuest - Student Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4f6fb;
+            color: #26304a;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #5145cd, #7868ed);
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 15px #5145cd25;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .welcome {
+            font-size: 14px;
+        }
+
+        .logout {
+            background: white;
+            color: #5145cd;
+            padding: 9px 16px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 28px auto;
+            padding: 0 20px 35px;
+        }
+
+        .page-heading {
+            margin-bottom: 22px;
+        }
+
+        .page-heading h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .page-heading p {
+            color: #7b8298;
+            font-size: 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 21px;
+            box-shadow: 0 4px 18px #252d4a08;
+            border: 1px solid #edf0f8;
+        }
+
+        .stat-icon {
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            color: #858ba0;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card h2 {
+            font-size: 25px;
+            color: #5145cd;
+        }
+
+        .progress-track {
+            height: 8px;
+            background: #ecebff;
+            border-radius: 20px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5145cd, #9b8cff);
+            border-radius: 20px;
+            transition: width 0.3s;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 17px;
+            padding: 23px;
+            border: 1px solid #edf0f8;
+            box-shadow: 0 4px 18px #252d4a08;
+            min-width: 0;
+        }
+
+        .panel.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .panel-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .tag {
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #eeecff;
+            color: #5145cd;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .quest-item,
+        .task-item,
+        .note-item,
+        .assignment-item,
+        .leaderboard-item {
+            padding: 13px;
+            border: 1px solid #edf0f8;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .quest-item,
+        .task-item,
+        .assignment-item,
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .quest-left,
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 0;
+        }
+
+        .quest-emoji {
+            font-size: 25px;
+        }
+
+        .item-title {
+            font-size: 13px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .item-subtitle {
+            font-size: 11px;
+            color: #8a90a3;
+            margin-top: 4px;
+        }
+
+        .xp-badge {
+            color: #cf8a14;
+            background: #fff5df;
+            padding: 5px 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .completed {
+            opacity: 0.65;
+            background: #f8f8fc;
+        }
+
+        .completed .item-title {
+            text-decoration: line-through;
+        }
+
+        .primary-btn,
+        .small-btn,
+        .danger-btn {
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            border-radius: 9px;
+            transition: 0.2s;
+        }
+
+        .primary-btn {
+            background: #5145cd;
+            color: white;
+            padding: 11px 16px;
+            font-size: 12px;
+        }
+
+        .primary-btn:hover {
+            background: #4034b3;
+            transform: translateY(-1px);
+        }
+
+        .small-btn {
+            background: #eeecff;
+            color: #5145cd;
+            padding: 8px 11px;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .small-btn:hover {
+            background: #dfdcff;
+        }
+
+        .danger-btn {
+            background: #fff0f0;
+            color: #d74747;
+            padding: 8px 11px;
+            font-size: 11px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #e2e5f0;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 12px;
+            background: #fff;
+            color: #26304a;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #7769e9;
+            box-shadow: 0 0 0 3px #7769e918;
+        }
+
+        textarea.form-control {
+            min-height: 75px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #9298aa;
+            font-size: 12px;
+            padding: 22px 10px;
+        }
+
+        .pet-area {
+            text-align: center;
+            background: linear-gradient(135deg, #f2efff, #fdf1ff);
+            border-radius: 14px;
+            padding: 24px 15px;
+        }
+
+        .pet-emoji {
+            font-size: 65px;
+            display: block;
+            margin-bottom: 8px;
+            animation: petBounce 2s infinite ease-in-out;
+        }
+
+        @keyframes petBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        .pet-area h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .pet-area p {
+            font-size: 12px;
+            color: #77718e;
+        }
+
+        .timer-panel {
+            background: linear-gradient(135deg, #f0efff, #faf6ff);
+            border: 1px solid #e7e2ff;
+        }
+
+        .timer-description {
+            color: #77718e;
+            font-size: 12px;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .timer-select-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .timer-select-row label {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .timer-select-row select {
+            flex: 1;
+            min-width: 130px;
+            max-width: 200px;
+        }
+
+        .timer-display {
+            font-size: clamp(48px, 8vw, 72px);
+            font-weight: 800;
+            text-align: center;
+            color: #5145cd;
+            letter-spacing: 3px;
+            padding: 14px 0 5px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-status {
+            text-align: center;
+            font-size: 12px;
+            color: #77718e;
+            margin-bottom: 17px;
+            min-height: 20px;
+        }
+
+        .timer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+
+        .timer-buttons button {
+            min-width: 95px;
+        }
+
+        .timer-reward {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #c08318;
+            margin-top: 17px;
+        }
+
+        .timer-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .timer-stat {
+            background: #fff;
+            border-radius: 11px;
+            padding: 13px 8px;
+            text-align: center;
+            border: 1px solid #eeebff;
+        }
+
+        .timer-stat strong {
+            display: block;
+            color: #5145cd;
+            font-size: 20px;
+        }
+
+        .timer-stat span {
+            font-size: 10px;
+            color: #858ba0;
+        }
+
+        .note-content {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #6f758b;
+            margin-top: 6px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .deadline {
+            font-size: 11px;
+            color: #7e8498;
+            margin-top: 4px;
+        }
+
+        .overdue {
+            color: #d74747;
+            font-weight: 700;
+        }
+
+        .attendance-result {
+            margin-top: 14px;
+            padding: 14px;
+            background: #f3f1ff;
+            border-radius: 11px;
+            font-size: 13px;
+            line-height: 1.8;
+            display: none;
+        }
+
+        .leaderboard-rank {
+            width: 31px;
+            height: 31px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eeecff;
+            color: #5145cd;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .leaderboard-points {
+            font-size: 12px;
+            font-weight: 700;
+            color: #5145cd;
+            white-space: nowrap;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px 10px 5px;
+            font-size: 11px;
+            color: #9298aa;
+        }
+
+        @media (max-width: 850px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel.full-width {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 15px 4%;
+            }
+
+            .brand {
+                font-size: 19px;
+            }
+
+            .container {
+                padding: 0 12px 25px;
+                margin-top: 20px;
+            }
+
+            .page-heading h1 {
+                font-size: 23px;
+            }
+
+            .panel {
+                padding: 16px;
+            }
+
+            .stats-grid {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-card h2 {
+                font-size: 21px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .timer-buttons button {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="brand">🎮 CampusQuest</div>
+
+    <div class="nav-right">
+        <span class="welcome">
+            Welcome, {{ current_user.username }}!
+        </span>
+        <a href="{{ url_for('logout') }}" class="logout">Logout ↗</a>
+    </div>
+</nav>
+
+<main class="container">
+
+    <div class="page-heading">
+        <h1>Your Student Dashboard 👋</h1>
+        <p>Build healthy habits, focus on your studies, and level up every day.</p>
+    </div>
+
+    <!-- DASHBOARD STATISTICS -->
+    <section class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <p>Total Experience Points</p>
+            <h2 id="totalXP">{{ current_user.xp }}</h2>
+            <div class="progress-track">
+                <div class="progress-fill"
+                     id="levelProgress"
+                     style="width: {{ ((current_user.xp % 100)) }}%;">
+                </div>
+            </div>
+            <p style="margin-top: 8px;">
+                <span id="levelText">Level {{ (current_user.xp // 100) + 1 }}</span>
+                · <span id="nextLevelText">{{ 100 - (current_user.xp % 100) }} XP to next level</span>
+            </p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📋</div>
+            <p>Pending Tasks</p>
+            <h2>{{ tasks|length }}</h2>
+            <p style="margin-top: 8px;">Keep moving forward!</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📝</div>
+            <p>Important Notes</p>
+            <h2>{{ notes|length }}</h2>
+            <p style="margin-top: 8px;">Your ideas in one place.</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <p>Assignments</p>
+            <h2>{{ assignments|length }}</h2>
+            <p style="margin-top: 8px;">
+                {% if due_today_count %}
+                    {{ due_today_count }} due today
+                {% else %}
+                    Stay ahead of deadlines.
+                {% endif %}
+            </p>
+        </div>
+
+    </section>
+
+    <section class="dashboard-grid">
+
+        <!-- DAILY QUESTS -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>🏆 Daily Quests</h2>
+                <span class="tag">{{ today_date }}</span>
+            </div>
+
+            <p class="timer-description">
+                Complete daily challenges to earn XP and build healthy habits.
+            </p>
+
+            {% for quest in quests %}
+                <div class="quest-item {% if quest.id in completed_quest_ids %}completed{% endif %}"
+                     id="quest-{{ quest.id }}">
+
+                    <div class="quest-left">
+                        <span class="quest-emoji">{{ quest.emoji }}</span>
+
+                        <div>
+                            <div class="item-title">{{ quest.title }}</div>
+                            <div class="item-subtitle">{{ quest.description }}</div>
+                        </div>
+                    </div>
+
+                    {% if quest.id in completed_quest_ids %}
+                        <span class="xp-badge">✓ Done</span>
+                    {% else %}
+                        <form method="POST" action="{{ url_for('complete_quest') }}">
+                            <input type="hidden" name="quest_id" value="{{ quest.id }}">
+                            <button type="submit" class="small-btn">
+                                +{{ quest.xp }} XP
+                            </button>
+                        </form>
+                    {% endif %}
+
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    No daily quests available right now.
+                </div>
+            {% endfor %}
+
+            <div style="margin-top: 16px; padding: 14px; background: #fff8e8; border-radius: 11px;">
+                <div style="font-size: 12px; color: #a9751b;">
+                    ⭐ XP earned today
+                </div>
+                <div style="font-size: 25px; font-weight: 800; color: #bd821a;">
+                    {{ today_xp }} XP
+                </div>
+            </div>
+        </div>
+
+        <!-- FOCUS TIMER -->
+        <div class="panel timer-panel">
+            <div class="panel-header">
+                <h2>⏱️ Focus Timer</h2>
+                <span class="tag">Study Mode</span>
+            </div>
+
+            <p class="timer-description">
+                Choose a study duration, focus without distractions, and earn
+                <strong>10 XP</strong> when the timer finishes.
+            </p>
+
+            <div class="timer-select-row">
+                <label for="focusDuration">Study duration:</label>
+
+                <select id="focusDuration" class="form-control">
+                    <option value="15">15 minutes</option>
+                    <option value="25" selected>25 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="50">50 minutes</option>
+                </select>
+            </div>
+
+            <div class="timer-display" id="focusTimerDisplay">25:00</div>
+
+            <div class="timer-status" id="focusTimerStatus" aria-live="polite">
+                Ready when you are. Start your focus session!
+            </div>
+
+            <div class="timer-buttons">
+                <button type="button" class="primary-btn" id="startFocusBtn">
+                    ▶ Start
+                </button>
+
+                <button type="button" class="small-btn" id="pauseFocusBtn">
+                    ⏸ Pause
+                </button>
+
+                <button type="button" class="small-btn" id="resetFocusBtn">
+                    ↻ Reset
+                </button>
+
+                <button type="button" class="small-btn" id="breakFocusBtn">
+                    ☕ 5-min Break
+                </button>
+            </div>
+
+            <div class="timer-reward">
+                🎁 Complete the full session to earn +10 XP
+            </div>
+
+            <div class="timer-stats">
+                <div class="timer-stat">
+                    <strong id="focusSessionCount">{{ focus_session_count }}</strong>
+                    <span>Sessions</span>
+                </div>
+
+                <div class="timer-stat">
+                    <strong id="focusMinutes">{{ focus_minutes }}</strong>
+                    <span>Minutes focused</span>
+                </div>
+
+                <div class="timer-stat">
+                    <strong id="focusXP">{{ focus_xp }}</strong>
+                    <span>XP earned</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUEST PET -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>🐾 Your Quest Pet</h2>
+                <span class="tag">Your Companion</span>
+            </div>
+
+            <div class="pet-area">
+                <span class="pet-emoji" id="petEmoji">
+                    {% if current_user.xp >= 200 %}
+                        🐉
+                    {% elif current_user.xp >= 100 %}
+                        🦊
+                    {% else %}
+                        🐣
+                    {% endif %}
+                </span>
+
+                <h3 id="petName">
+                    {% if current_user.xp >= 200 %}
+                        Legendary Dragon
+                    {% elif current_user.xp >= 100 %}
+                        Clever Fox
+                    {% else %}
+                        Little Chick
+                    {% endif %}
+                </h3>
+
+                <p id="petMessage">
+                    {% if current_user.xp >= 200 %}
+                        Amazing progress! Your pet is legendary.
+                    {% elif current_user.xp >= 100 %}
+                        Your pet is growing. Keep earning XP!
+                    {% else %}
+                        Complete quests and earn XP to help your pet grow!
+                    {% endif %}
+                </p>
+            </div>
+
+            <div style="margin-top: 16px;">
+                <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px;">
+                    <span>Pet growth</span>
+                    <strong id="petProgressText">{{ current_user.xp % 100 }}%</strong>
+                </div>
+
+                <div class="progress-track">
+                    <div class="progress-fill"
+                         id="petProgress"
+                         style="width: {{ current_user.xp % 100 }}%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ATTENDANCE CALCULATOR -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>📊 Attendance Calculator</h2>
+                <span class="tag">Plan Ahead</span>
+            </div>
+
+            <p class="timer-description">
+                Calculate your current attendance percentage and check how many
+                classes you need to attend to reach your target.
+            </p>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="classesConducted">Classes conducted</label>
+                    <input type="number" id="classesConducted"
+                           class="form-control" min="0"
+                           placeholder="e.g. 60">
+                </div>
+
+                <div class="form-group">
+                    <label for="classesAttended">Classes attended</label>
+                    <input type="number" id="classesAttended"
+                           class="form-control" min="0"
+                           placeholder="e.g. 48">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="attendanceTarget">Target attendance (%)</label>
+                <input type="number" id="attendanceTarget"
+                       class="form-control" min="1" max="100"
+                       value="75">
+            </div>
+
+            <button type="button" class="primary-btn"
+                    id="calculateAttendanceBtn">
+                Calculate Attendance
+            </button>
+
+            <div class="attendance-result" id="attendanceResult"
+                 aria-live="polite"></div>
+        </div>
+
+        <!-- DAILY TASKS -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>✅ Daily Tasks</h2>
+                <span class="tag">{{ tasks|length }} pending</span>
+            </div>
+
+            <form method="POST" action="{{ url_for('add_task') }}"
+                  style="margin-bottom: 18px;">
+                <div class="form-group">
+                    <label for="taskTitle">New task</label>
+                    <input type="text" id="taskTitle" name="title"
+                           class="form-control" placeholder="What do you need to do?"
+                           required>
+                </div>
+
+                <button type="submit" class="primary-btn">
+                    + Add Task
+                </button>
+            </form>
+
+            {% for task in tasks %}
+                <div class="task-item {% if task.completed %}completed{% endif %}">
+                    <div class="item-info">
+                        <span style="font-size:20px;">📌</span>
+                        <div>
+                            <div class="item-title">
+                                {{ task.title }}
+                            </div>
+
+                            {% if task.due_date is defined and task.due_date %}
+                                <div class="item-subtitle">
+                                    Due: {{ task.due_date }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <form method="POST"
+      action="{{ url_for('complete_task', task_id=task.id) }}">
+    <button type="submit" class="small-btn">
+        {% if task.completed %}
+            ↩ Undo
+        {% else %}
+            ✓ Done
+        {% endif %}
+    </button>
+</form>
+
+{% if task.completed %}
+    <div style="color: green; font-weight: bold; margin-top: 6px;">
+        ✓ Completed
+    </div>
+{% endif %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    🎉 No pending tasks. Add a task to get started!
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- IMPORTANT NOTES -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>📝 Important Notes</h2>
+                <span class="tag">{{ notes|length }} notes</span>
+            </div>
+
+            <form method="POST" action="{{ url_for('add_note') }}"
+                  style="margin-bottom: 18px;">
+                <div class="form-group">
+                    <label for="noteTitle">Note title</label>
+                    <input type="text" id="noteTitle" name="title"
+                           class="form-control"
+                           placeholder="e.g. Exam preparation" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="noteContent">Note content</label>
+                    <textarea id="noteContent" name="content"
+                              class="form-control"
+                              placeholder="Write your important points here..."
+                              required></textarea>
+                </div>
+
+                <button type="submit" class="primary-btn">
+                    + Save Note
+                </button>
+            </form>
+
+            {% for note in notes %}
+                <div class="note-item">
+                    <div class="item-title">
+                        📌 {{ note.title }}
+                    </div>
+
+                    <div class="note-content">{{ note.content }}</div>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    No notes yet. Save important information here.
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- ASSIGNMENTS -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>📚 Assignments & Deadlines</h2>
+                <span class="tag">{{ assignments|selectattr('completed', 'equalto', false)|list|length }} pending</span>
+            </div>
+
+            <form method="POST" action="{{ url_for('add_assignment') }}"
+                  style="margin-bottom: 18px;">
+
+                <div class="form-group">
+                    <label for="assignmentTitle">Assignment title</label>
+                    <input type="text" id="assignmentTitle" name="title"
+                           class="form-control"
+                           placeholder="e.g. Python assignment" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="assignmentSubject">Subject</label>
+                    <input type="text" id="assignmentSubject" name="subject"
+                           class="form-control"
+                           placeholder="e.g. Introduction to Computing"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="assignmentDeadline">Deadline</label>
+                    <input type="date" id="assignmentDeadline" name="deadline"
+                           class="form-control" required>
+                </div>
+
+                <button type="submit" class="primary-btn">
+                    + Add Assignment
+                </button>
+            </form>
+
+            {% for assignment in assignments %}
+    <div class="assignment-item {% if assignment.completed %}completed{% endif %}">
+        <div class="item-info">
+            <span style="font-size:22px;">📖</span>
+
+            <div>
+                <div class="item-title">
+                    {{ assignment.title }}
+                </div>
+
+                <div class="item-subtitle">
+                    {{ assignment.due_date }}
+                </div>
+
+                <div class="deadline
+                    {% if assignment.due_date and assignment.due_date|string < today_date|string and not assignment.completed %}overdue{% endif %}">
+                    Deadline: {{ assignment.due_date }}
+                </div>
+
+                {% if assignment.completed %}
+                    <span style="color: green; font-weight: bold;">
+                        ✓ Completed
+                    </span>
+                {% else %}
+                    <form method="POST"
+                          action="{{ url_for('complete_assignment', assignment_id=assignment.id) }}">
+                        <button type="submit">✓ Done</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="empty-state">
+        No assignments added yet.
+    </div>
+{% endfor %}
+        <!-- STUDENT LEADERBOARD -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>🥇 Student Leaderboard</h2>
+                <span class="tag">Top Students</span>
+            </div>
+
+            {% for student in students %}
+                <div class="leaderboard-item">
+                    <div class="item-info">
+                        <div class="leaderboard-rank">
+                            {{ loop.index }}
+                        </div>
+
+                        <div>
+                            <div class="item-title">
+                                {{ student.username }}
+                                {% if student.id == current_user.id %}
+                                    <span style="color:#5145cd;">(You)</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="item-subtitle">
+                                Level {{ (student.xp // 100) + 1 }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="leaderboard-points">
+                        ⭐ {{ student.xp }} XP
+                    </div>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    No leaderboard data available yet.
+                </div>
+            {% endfor %}
+        </div>
+
+    </section>
+
+<!-- DAILY TASK PROGRESS GRAPH -->
+<div class="panel" style="margin-top: 24px;">
+    <div class="panel-header">
+        <h2>📊 Daily Task Progress</h2>
+        <span class="tag">{{ task_progress }}% Complete</span>
+    </div>
+
+    <div style="display: flex; justify-content: space-between;
+                gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
+
+        <div>
+            <div style="color: #16a34a; font-weight: 600;">
+                ✓ Completed
+            </div>
+            <div style="font-size: 30px; font-weight: bold;">
+                {{ completed_task_count }}
+            </div>
+        </div>
+
+        <div>
+            <div style="color: #64748b; font-weight: 600;">
+                ⏳ Pending
+            </div>
+            <div style="font-size: 30px; font-weight: bold;">
+                {{ pending_task_count }}
+            </div>
+        </div>
+
+        <div>
+            <div style="color: #5145cd; font-weight: 600;">
+                Total Tasks
+            </div>
+            <div style="font-size: 30px; font-weight: bold;">
+                {{ total_task_count }}
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 22px; background: #e5e7eb;
+                border-radius: 12px; overflow: hidden;">
+        <div style="height: 100%;
+                    width: {{ task_progress }}%;
+                    background: #22a06b;
+                    border-radius: 12px;
+                    transition: width 0.4s ease;">
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 12px;
+                font-weight: 600; color: #5145cd;">
+        {{ task_progress }}% of tasks completed
+    </div>
+</div>
+
+    <div class="footer">
+        🎮 CampusQuest · Play, Move, Attend · Small steps, big achievements!
+    </div>
+
+</main>
+
+<script>
+    // -----------------------------------------
+    // FOCUS TIMER
+    // -----------------------------------------
+
+    const focusDurationSelect = document.getElementById("focusDuration");
+    const focusTimerDisplay = document.getElementById("focusTimerDisplay");
+    const focusTimerStatus = document.getElementById("focusTimerStatus");
+
+    const startFocusBtn = document.getElementById("startFocusBtn");
+    const pauseFocusBtn = document.getElementById("pauseFocusBtn");
+    const resetFocusBtn = document.getElementById("resetFocusBtn");
+    const breakFocusBtn = document.getElementById("breakFocusBtn");
+
+    const completeFocusUrl = {{ url_for('complete_focus_session')|tojson }};
+
+    let focusRemainingSeconds = Number(focusDurationSelect.value) * 60;
+    let focusInterval = null;
+    let focusRunning = false;
+    let focusBreakMode = false;
+    let focusSessionKey = null;
+    let focusSessionStarted = false;
+
+    function formatTime(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+
+        return String(minutes).padStart(2, "0") + ":" +
+               String(seconds).padStart(2, "0");
+    }
+
+    function updateFocusDisplay() {
+        focusTimerDisplay.textContent = formatTime(focusRemainingSeconds);
+    }
+
+    function createFocusSessionKey() {
+        if (window.crypto && typeof window.crypto.randomUUID === "function") {
+            return window.crypto.randomUUID();
+        }
+
+        return "focus-" + Date.now() + "-" +
+               Math.random().toString(36).slice(2);
+    }
+
+    function stopFocusInterval() {
+        if (focusInterval !== null) {
+            clearInterval(focusInterval);
+            focusInterval = null;
+        }
+
+        focusRunning = false;
+        startFocusBtn.textContent = "▶ Start";
+    }
+
+    function resetFocusTimer() {
+        stopFocusInterval();
+
+        focusBreakMode = false;
+        focusSessionStarted = false;
+        focusSessionKey = null;
+
+        focusRemainingSeconds = Number(focusDurationSelect.value) * 60;
+
+        updateFocusDisplay();
+
+        focusTimerStatus.textContent =
+            "Ready when you are. Start your focus session!";
+
+        focusDurationSelect.disabled = false;
+    }
+
+    function startFocusTimer() {
+        if (focusRunning) {
+            return;
+        }
+
+        if (focusRemainingSeconds <= 0) {
+            resetFocusTimer();
+        }
+
+        if (!focusBreakMode && !focusSessionStarted) {
+            focusSessionKey = createFocusSessionKey();
+            focusSessionStarted = true;
+        }
+
+        focusRunning = true;
+        startFocusBtn.textContent = "▶ Running";
+        focusDurationSelect.disabled = true;
+
+        if (focusBreakMode) {
+            focusTimerStatus.textContent = "☕ Break time! Relax for a while.";
+        } else {
+            focusTimerStatus.textContent = "📚 Stay focused. You've got this!";
+        }
+
+        focusInterval = setInterval(function () {
+            if (focusRemainingSeconds > 0) {
+                focusRemainingSeconds--;
+                updateFocusDisplay();
+            }
+
+            if (focusRemainingSeconds <= 0) {
+                stopFocusInterval();
+
+                if (focusBreakMode) {
+                    focusTimerStatus.textContent =
+                        "✅ Break finished! Ready for another study session?";
+
+                    focusDurationSelect.disabled = false;
+                    focusBreakMode = false;
+                    focusSessionStarted = false;
+                    focusSessionKey = null;
+                    return;
+                }
+
+                completeFocusSession();
+            }
+        }, 1000);
+    }
+
+    function pauseFocusTimer() {
+        if (!focusRunning) {
+            return;
+        }
+
+        stopFocusInterval();
+
+        focusTimerStatus.textContent =
+            "⏸ Timer paused. Press Start to continue.";
+    }
+
+    function startFocusBreak() {
+        stopFocusInterval();
+
+        focusBreakMode = true;
+        focusSessionStarted = false;
+        focusSessionKey = null;
+        focusRemainingSeconds = 5 * 60;
+
+        focusDurationSelect.disabled = true;
+
+        updateFocusDisplay();
+
+        focusTimerStatus.textContent =
+            "☕ Five-minute break. This break does not earn XP.";
+
+        startFocusTimer();
+    }
+
+    async function completeFocusSession() {
+        focusTimerStatus.textContent = "🎉 Session completed! Saving your XP...";
+
+        focusDurationSelect.disabled = false;
+
+        const completedMinutes = Number(focusDurationSelect.value);
+        const sessionKey = focusSessionKey;
+
+        focusSessionStarted = false;
+        focusSessionKey = null;
+
+        try {
+            const response = await fetch(completeFocusUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+                body: JSON.stringify({
+                    duration: completedMinutes,
+                    session_key: sessionKey
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                focusTimerStatus.textContent =
+                    data.message || "Could not save the session. Please refresh and check.";
+
+                return;
+            }
+
+            if (data.duplicate) {
+                focusTimerStatus.textContent =
+                    "This session was already recorded. No extra XP was added.";
+                return;
+            }
+
+            focusTimerStatus.textContent =
+                "🎉 Great work! You earned 10 XP for completing your focus session!";
+
+            const countElement = document.getElementById("focusSessionCount");
+            const minutesElement = document.getElementById("focusMinutes");
+            const xpElement = document.getElementById("focusXP");
+
+            if (countElement && data.focus_session_count !== undefined) {
+                countElement.textContent = data.focus_session_count;
+            }
+
+            if (minutesElement && data.focus_minutes !== undefined) {
+                minutesElement.textContent = data.focus_minutes;
+            }
+
+            if (xpElement && data.focus_xp !== undefined) {
+                xpElement.textContent = data.focus_xp;
+            }
+
+            if (data.total_xp !== undefined) {
+                updateXPDisplay(data.total_xp);
+            }
+
+        } catch (error) {
+            focusTimerStatus.textContent =
+                "Could not connect to the server. Refresh the page to check your XP.";
+        }
+    }
+
+    function updateXPDisplay(totalXP) {
+        const totalXPElement = document.getElementById("totalXP");
+        const levelText = document.getElementById("levelText");
+        const nextLevelText = document.getElementById("nextLevelText");
+        const levelProgress = document.getElementById("levelProgress");
+        const petProgress = document.getElementById("petProgress");
+        const petProgressText = document.getElementById("petProgressText");
+        const petEmoji = document.getElementById("petEmoji");
+        const petName = document.getElementById("petName");
+        const petMessage = document.getElementById("petMessage");
+
+        if (totalXPElement) {
+            totalXPElement.textContent = totalXP;
+        }
+
+        const level = Math.floor(totalXP / 100) + 1;
+        const progress = totalXP % 100;
+        const remainingXP = 100 - progress;
+
+        if (levelText) {
+            levelText.textContent = "Level " + level;
+        }
+
+        if (nextLevelText) {
+            nextLevelText.textContent = remainingXP + " XP to next level";
+        }
+
+        if (levelProgress) {
+            levelProgress.style.width = progress + "%";
+        }
+
+        if (petProgress) {
+            petProgress.style.width = progress + "%";
+        }
+
+        if (petProgressText) {
+            petProgressText.textContent = progress + "%";
+        }
+
+        if (totalXP >= 200) {
+            if (petEmoji) petEmoji.textContent = "🐉";
+            if (petName) petName.textContent = "Legendary Dragon";
+            if (petMessage) {
+                petMessage.textContent =
+                    "Amazing progress! Your pet is legendary.";
+            }
+        } else if (totalXP >= 100) {
+            if (petEmoji) petEmoji.textContent = "🦊";
+            if (petName) petName.textContent = "Clever Fox";
+            if (petMessage) {
+                petMessage.textContent =
+                    "Your pet is growing. Keep earning XP!";
+            }
+        } else {
+            if (petEmoji) petEmoji.textContent = "🐣";
+            if (petName) petName.textContent = "Little Chick";
+            if (petMessage) {
+                petMessage.textContent =
+                    "Complete quests and earn XP to help your pet grow!";
+            }
+        }
+    }
+
+    focusDurationSelect.addEventListener("change", function () {
+        if (focusRunning) {
+            return;
+        }
+
+        focusBreakMode = false;
+        focusSessionStarted = false;
+        focusSessionKey = null;
+
+        focusRemainingSeconds = Number(focusDurationSelect.value) * 60;
+
+        updateFocusDisplay();
+
+        focusTimerStatus.textContent =
+            "Ready when you are. Start your focus session!";
+    });
+
+    startFocusBtn.addEventListener("click", startFocusTimer);
+    pauseFocusBtn.addEventListener("click", pauseFocusTimer);
+    resetFocusBtn.addEventListener("click", resetFocusTimer);
+    breakFocusBtn.addEventListener("click", startFocusBreak);
+
+    updateFocusDisplay();
+
+
+    // -----------------------------------------
+    // ATTENDANCE CALCULATOR
+    // -----------------------------------------
+
+    const calculateAttendanceBtn =
+        document.getElementById("calculateAttendanceBtn");
+
+    calculateAttendanceBtn.addEventListener("click", function () {
+        const conductedInput =
+            document.getElementById("classesConducted");
+
+        const attendedInput =
+            document.getElementById("classesAttended");
+
+        const targetInput =
+            document.getElementById("attendanceTarget");
+
+        const result =
+            document.getElementById("attendanceResult");
+
+        const conducted = Number(conductedInput.value);
+        const attended = Number(attendedInput.value);
+        const target = Number(targetInput.value);
+
+        result.style.display = "block";
+
+        if (
+            conductedInput.value.trim() === "" ||
+            attendedInput.value.trim() === "" ||
+            targetInput.value.trim() === ""
+        ) {
+            result.textContent =
+                "Please enter all the values before calculating.";
+            return;
+        }
+
+        if (
+            !Number.isFinite(conducted) ||
+            !Number.isFinite(attended) ||
+            !Number.isFinite(target) ||
+            conducted < 0 ||
+            attended < 0 ||
+            attended > conducted ||
+            target <= 0 ||
+            target > 100
+        ) {
+            result.textContent =
+                "Please enter valid values. Attended classes cannot exceed conducted classes.";
+            return;
+        }
+
+        if (conducted === 0) {
+            result.textContent =
+                "No classes have been conducted yet.";
+            return;
+        }
+
+        const percentage = (attended / conducted) * 100;
+
+        let message =
+            "<strong>Current attendance:</strong> " +
+            percentage.toFixed(2) + "%<br>";
+
+        if (percentage >= target) {
+            const canMiss =
+                Math.floor((attended * 100 / target) - conducted);
+
+            message +=
+                "<strong>Status:</strong> You have reached your target! 🎉<br>";
+
+            message +=
+                "<strong>Maximum additional classes you could miss:</strong> " +
+                Math.max(0, canMiss);
+        } else {
+            const requiredClasses =
+                Math.ceil(
+                    (target * conducted - 100 * attended) /
+                    (100 - target)
+                );
+
+            if (target === 100) {
+                message +=
+                    "<strong>Classes needed:</strong> Attend every upcoming class to reach 100%.";
+            } else {
+                message +=
+                    "<strong>Status:</strong> Below your target.<br>";
+
+                message +=
+                    "<strong>Consecutive classes to attend:</strong> " +
+                    Math.max(0, requiredClasses);
+            }
+        }
+
+        result.innerHTML = message;
+    });
+
+
+    // -----------------------------------------
+    // ASSIGNMENT DATE VALIDATION
+    // -----------------------------------------
+
+    const assignmentDeadline =
+        document.getElementById("assignmentDeadline");
+
+    if (assignmentDeadline) {
+        const now = new Date();
+
+        const localToday =
+            now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, "0") + "-" +
+            String(now.getDate()).padStart(2, "0");
+
+        assignmentDeadline.min = localToday;
+    }
+
+</script>
+
+</body>
+</html>

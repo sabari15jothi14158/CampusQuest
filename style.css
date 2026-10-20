@@ -1,0 +1,340 @@
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* MAIN PAGE */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #f5f3ff, #e0f2fe);
+    color: #1e293b;
+    padding: 30px 18px;
+    min-height: 100vh;
+    overflow-wrap: break-word;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* CARDS */
+.card {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 28px;
+    margin-bottom: 24px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(51, 65, 150, 0.10);
+    border: 1px solid #e5e7eb;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(51, 65, 150, 0.15);
+}
+
+/* HEADER */
+header.card {
+    background: linear-gradient(135deg, #4338ca, #7c3aed);
+    color: white;
+    padding: 38px;
+}
+
+header.card h1,
+header.card h2,
+header.card p {
+    color: white;
+}
+
+/* TEXT */
+h1 {
+    font-size: 36px;
+    line-height: 1.25;
+    margin-bottom: 12px;
+}
+
+h2 {
+    font-size: 23px;
+    line-height: 1.35;
+    margin-bottom: 16px;
+    color: #4338ca;
+}
+
+h3, h4 {
+    line-height: 1.4;
+    margin: 12px 0;
+}
+
+p {
+    line-height: 1.7;
+    margin: 8px 0;
+    color: #475569;
+}
+
+a {
+    overflow-wrap: anywhere;
+}
+
+/* DAILY QUESTS */
+.quest {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 12px;
+    margin: 12px 0;
+    border: 1px solid #e2e8f0;
+}
+
+.quest label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.quest-checkbox {
+    flex-shrink: 0;
+    width: 19px;
+    height: 19px;
+    accent-color: #6d28d9;
+    cursor: pointer;
+}
+
+.quest:has(.quest-checkbox:checked) {
+    background: #f0fdf4;
+    border-color: #86efac;
+}
+
+/* XP */
+#xp {
+    color: #6d28d9;
+    font-size: 38px;
+    font-weight: 700;
+}
+
+.progress {
+    width: 100%;
+    background: #e2e8f0;
+    height: 12px;
+    border-radius: 20px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, #7c3aed, #06b6d4);
+    height: 100%;
+    width: 0%;
+    border-radius: 20px;
+    transition: width 0.3s ease;
+}
+
+/* FORMS */
+input,
+textarea,
+select {
+    font-family: inherit;
+    font-size: 16px;
+    max-width: 100%;
+}
+
+input[type="number"] {
+    padding: 12px;
+    width: 100%;
+    max-width: 350px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    margin-top: 8px;
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #7c3aed;
+    outline: 2px solid #ede9fe;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* BUTTONS */
+button {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    border: none;
+    padding: 13px 22px;
+    min-height: 44px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+button:hover {
+    opacity: 0.88;
+}
+
+button:disabled {
+    background: #16a34a;
+    cursor: default;
+}
+
+/* STATUS MESSAGES */
+#result {
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+#quest-message {
+    color: #6d28d9;
+    font-weight: 600;
+    margin-top: 16px;
+}
+
+#achievement {
+    background: #fffbeb;
+    padding: 14px;
+    border-radius: 10px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 15px;
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 12px;
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
+    .card {
+        padding: 22px;
+        margin-bottom: 18px;
+    }
+
+    header.card {
+        padding: 28px 20px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    body {
+        padding: 12px 8px;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .card {
+        padding: 16px 13px;
+        margin-bottom: 14px;
+        border-radius: 15px;
+    }
+
+    .card:hover {
+        transform: none;
+    }
+
+    header.card {
+        padding: 24px 14px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    h3 {
+        font-size: 17px;
+    }
+
+    p {
+        font-size: 15px;
+    }
+
+    .quest {
+        padding: 13px 10px;
+    }
+
+    .quest label {
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 15px;
+    }
+
+    .quest-checkbox {
+        margin-top: 3px;
+    }
+
+    #xp {
+        font-size: 32px;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    input[type="date"],
+    input[type="password"],
+    textarea,
+    select {
+        width: 100%;
+        max-width: 100%;
+        min-height: 44px;
+    }
+
+    button {
+        width: 100%;
+        min-height: 46px;
+        padding: 12px 14px;
+    }
+
+    footer {
+        padding: 12px 5px;
+    }
+}
+
+/* SMALL MOBILE */
+@media (max-width: 360px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .card {
+        padding: 13px 10px;
+    }
+
+    #xp {
+        font-size: 28px;
+    }
+}
